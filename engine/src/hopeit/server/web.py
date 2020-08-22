@@ -497,11 +497,21 @@ async def _handle_post_invocation(
     """
     context = None
     try:
-        context = _request_start(app_engine, impl, event_name, request)
+        context = _request_start(app_engine, impl, event_name, request)                
         query_args = dict(request.query)
         _validate_authorization(app_engine.app_config, context, auth_types, request)
         payload = await _request_process_payload(context, datatype, request)
-        return await _request_execute(impl, event_name, context, query_args, payload)
+        
+        if context.event_info.config.publish_requests_stream:
+            print(f"Publish Request:")
+            print(query_args, payload)
+
+        response = await _request_execute(impl, event_name, context, query_args, payload)
+
+        if context.event_info.config.publish_responses_stream:
+            print(f"Publish Response:")
+            print(response.status, response.body)
+        return response
     except Unauthorized as e:
         return _ignored_response(context, 401, e)
     except BadRequest as e:

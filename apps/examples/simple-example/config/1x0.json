@@ -31,7 +31,11 @@
       "route": "{app.name}/{app.version}/query_something"
     },
     "save_something" : {
-      "type": "POST"
+      "type": "POST",
+      "config": {
+        "publish_requests_stream" : "{auto}",
+        "publish_responses_stream" : "{auto}"
+      }
     },
     "service.something_generator": {
       "type": "SERVICE",

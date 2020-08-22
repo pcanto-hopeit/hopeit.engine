@@ -172,6 +172,8 @@ class EventConfig:
     :field stream: EventStreamConfig, configuration for stream processing for this particular event
     """
     response_timeout: float = 60.0
+    publish_requests_stream : Optional[str] = None
+    publish_responses_stream : Optional[str] = None
     logging: EventLoggingConfig = field(default_factory=EventLoggingConfig)
     stream: EventStreamConfig = field(default_factory=EventStreamConfig)
 
